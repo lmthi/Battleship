@@ -15,10 +15,15 @@ public class InvalidShipPlacementsException extends BSTException {
         this.ships = ships;
     }
 
-    public static void validate(ShipPlacement[] ships) {
+    public static void validate(ShipPlacement[] ships, ShipType[] shipTypes) {
         for(ShipPlacement ship : ships) {
             if(ship == null) {
                 throw new InvalidShipPlacementsException(InvalidShipPlacementsType.NULL, "ShipPlacement is null", ships);
+            }
+        }
+        for(int i = 0; i < ships.length; i++) {
+            if(ships[i].shipType != shipTypes[i]) {
+                throw new InvalidShipPlacementsException(InvalidShipPlacementsType.WRONG_SHIP, String.format("Wrong ship at index %d: expected %s but found %s", i, shipTypes[i].name, ships[i].shipType.name), ships);
             }
         }
         BoardType board =  ships[0].board;
@@ -41,6 +46,7 @@ public class InvalidShipPlacementsException extends BSTException {
 
     public enum InvalidShipPlacementsType {
         NULL,
+        WRONG_SHIP,
         DIFFERENT_BOARDS,
         OVERLAP,
     }

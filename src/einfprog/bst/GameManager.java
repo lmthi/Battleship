@@ -93,14 +93,14 @@ public class GameManager {
     protected void placeShips() {
         Callable<ShipPlacement[]> shipsPlayer1Callable = () -> {
             ShipPlacement[] shipPlacements = getPlayer1().placeShips(ships);
-            InvalidShipPlacementsException.validate(shipPlacements);
+            InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
         shipPlacements1 = wrap(PlayerType.PLAYER1, shipsPlayer1Callable);
 
         Callable<ShipPlacement[]> shipsPlayer2Callable = () -> {
             ShipPlacement[] shipPlacements = getPlayer2().placeShips(ships);
-            InvalidShipPlacementsException.validate(shipPlacements);
+            InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
         shipPlacements2 = wrap(PlayerType.PLAYER2, shipsPlayer2Callable);

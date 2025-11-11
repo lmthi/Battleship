@@ -8,6 +8,7 @@ import einfprog.bst.player.RandomPlayer;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -26,13 +27,13 @@ public class Main {
         //player2.onMatchStart(player1.getName(), 1, BoardType.STANDARD_BOARD);
         human.onMatchStart(player1.getName(), 1, BoardType.STANDARD_BOARD);
 
-        try(GameManager m = new GameManager(BoardType.STANDARD_BOARD, ShipType.STANDARD_SHIPS, player1, human)) {
-            GameResult res = m.playNewRound();
-            System.out.println(res.toString());
+        GameManager m = new GameManager(BoardType.STANDARD_BOARD, ShipType.STANDARD_SHIPS, player1, human);
 
-            if(res instanceof GameResult.Disqualified d) {
-                d.exception.printStackTrace();
-            }
+        GameResult res = m.playNewRound();
+        System.out.println(res.toString());
+
+        if(res instanceof GameResult.Disqualified d) {
+            d.exception.printStackTrace();
         }
     }
 }

@@ -1,6 +1,5 @@
 package einfprog.bst;
 
-import einfprog.bst.exception.CallTimedOutException;
 import einfprog.bst.exception.InvalidShipPlacementsException;
 import einfprog.bst.game.BoardType;
 import einfprog.bst.game.Coordinates;
@@ -17,26 +16,25 @@ import java.util.concurrent.*;
 public class GameManager {
     public final BoardType boardType;
     public final List<ShipType> ships;
-    public final IPlayer player1;
-    public final IPlayer player2;
 
+    protected IPlayer player1;
+    protected IPlayer player2;
     protected GameResult gameResult;
-    protected boolean playersFlipped;
     protected List<Coordinates> moves;
     protected List<ShipPlacement> shipPlacements1;
     protected List<ShipPlacement> shipPlacements2;
     protected FullBoardView boardPlayer1;
     protected FullBoardView boardPlayer2;
 
-    public GameManager(BoardType boardType, List<ShipType> ships, IPlayer player1, IPlayer player2) {
+    public GameManager(BoardType boardType, List<ShipType> ships) {
         this.boardType = boardType;
         this.ships = Collections.unmodifiableList(ships);
-        this.player1 = player1;
-        this.player2 = player2;
-        playersFlipped = true; // we switch at init
     }
 
-    public GameResult playNewRound() {
+    public GameResult playNewRound(IPlayer player1, IPlayer player2) {
+        this.player1 = player1;
+        this.player2 = player2;
+
         initNewRound();
 
         startRound();
@@ -48,38 +46,21 @@ public class GameManager {
 
     protected void initNewRound() {
         gameResult = null;
-        playersFlipped = !playersFlipped;
         moves = new LinkedList<>();
         shipPlacements1 = null;
         shipPlacements2 = null;
         boardPlayer1 = null;
         boardPlayer2 = null;
     }
-
-    protected IPlayer getPlayer1() {
-        if(!playersFlipped) {
-            return player1;
-        } else {
-            return player2;
-        }
-    }
-
-    protected IPlayer getPlayer2() {
-        if(playersFlipped) {
-            return player1;
-        } else {
-            return player2;
-        }
-    }
-
+    
     protected void startRound() {
-        wrap(PlayerType.PLAYER1, () -> getPlayer1().onGameStart(PlayerType.PLAYER1), true, false);
-        wrap(PlayerType.PLAYER2, () -> getPlayer2().onGameStart(PlayerType.PLAYER2), true, false);
+        wrap(PlayerType.PLAYER1, () -> player1.onGameStart(PlayerType.PLAYER1), true, false);
+        wrap(PlayerType.PLAYER2, () -> player2.onGameStart(PlayerType.PLAYER2), true, false);
     }
 
     protected void endRound() {
-        wrap(PlayerType.PLAYER1, () -> getPlayer1().onGameEnd(gameResult), true, false);
-        wrap(PlayerType.PLAYER2, () -> getPlayer2().onGameEnd(gameResult), true, false);
+        wrap(PlayerType.PLAYER1, () -> player1.onGameEnd(gameResult), true, false);
+        wrap(PlayerType.PLAYER2, () -> player2.onGameEnd(gameResult), true, false);
     }
 
     protected void innerRound() {
@@ -93,14 +74,14 @@ public class GameManager {
 
     protected void placeShips() {
         Callable<List<ShipPlacement>> shipsPlayer1Callable = () -> {
-            List<ShipPlacement> shipPlacements = getPlayer1().placeShips(ships);
+            List<ShipPlacement> shipPlacements = player1.placeShips(ships);
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
         shipPlacements1 = wrap(PlayerType.PLAYER1, shipsPlayer1Callable);
 
         Callable<List<ShipPlacement>> shipsPlayer2Callable = () -> {
-            List<ShipPlacement> shipPlacements = getPlayer2().placeShips(ships);
+            List<ShipPlacement> shipPlacements = player2.placeShips(ships);
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
@@ -115,7 +96,7 @@ public class GameManager {
     }
 
     protected void playRound() {
-        PlayerType turn = playersFlipped ? PlayerType.PLAYER2 : PlayerType.PLAYER1;
+        PlayerType turn = PlayerType.PLAYER1;
         while(gameResult == null) {
             fire(turn);
             turn = turn.getOtherPlayer();
@@ -129,12 +110,12 @@ public class GameManager {
         IPlayer defender;
         FullBoardView board;
         if(player == PlayerType.PLAYER1) {
-            attacker = getPlayer1();
-            defender = getPlayer2();
+            attacker = player1;
+            defender = player2;
             board = boardPlayer2;
         } else {
-            attacker = getPlayer2();
-            defender = getPlayer1();
+            attacker = player2;
+            defender = player1;
             board = boardPlayer1;
         }
 
@@ -175,22 +156,12 @@ public class GameManager {
             return null;
         }
         try {
-            return doWrap(callable);
+            return callable.call();
         } catch(Exception e) {
             if(writeGameResult && gameResult == null) {
                 gameResult = new GameResult.Disqualified(player.getOtherPlayer(), boardType, e);
             }
             return null;
-        }
-    }
-
-    protected  <T> T doWrap(Callable<T> callable) {
-        try {
-            return callable.call();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 }

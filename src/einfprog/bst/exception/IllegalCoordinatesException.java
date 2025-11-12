@@ -17,7 +17,7 @@ public class IllegalCoordinatesException extends BSTException {
             throw new IllegalCoordinatesException(InvalidCoordinatesType.BOARD_NULL, "Board is null!", row, column);
         }
         if(!board.validate(row, column)) {
-            throw new IllegalCoordinatesException(InvalidCoordinatesType.INVALID_ROW_COLUMN, String.format("Invalid coordinates row=%s, column=%s", board.formatRow(row), board.formatColumn(column)), row, column);
+            throw new IllegalCoordinatesException(InvalidCoordinatesType.INVALID_ROW_COLUMN, String.format("Invalid coordinates row %s (%s), column=%s (%s)", board.formatRow(row), row, board.formatColumn(column), column), row, column);
         }
     }
 

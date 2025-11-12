@@ -24,14 +24,14 @@ public class GameResult {
     }
 
     public static final class FullyPlayed extends GameResult {
-        public final ShipPlacement[] player1Ships;
-        public final ShipPlacement[] player2Ships;
+        public final List<ShipPlacement> player1Ships;
+        public final List<ShipPlacement> player2Ships;
         public final List<Coordinates> moves;
 
-        public FullyPlayed(PlayerType winner, BoardType board, ShipPlacement[] player1Ships, ShipPlacement[] player2Ships, List<Coordinates> moves) {
+        public FullyPlayed(PlayerType winner, BoardType board, List<ShipPlacement> player1Ships, List<ShipPlacement> player2Ships, List<Coordinates> moves) {
             super(GameResultType.FULLY_PLAYED, board, winner);
-            this.player1Ships = player1Ships;
-            this.player2Ships = player2Ships;
+            this.player1Ships = Collections.unmodifiableList(player1Ships);
+            this.player2Ships = Collections.unmodifiableList(player2Ships);
             this.moves = Collections.unmodifiableList(moves);
         }
     }

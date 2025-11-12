@@ -9,27 +9,28 @@ import einfprog.bst.game.ShipType;
 import einfprog.bst.player.IPlayer;
 import einfprog.bst.state.FullBoardView;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.*;
 
 public class GameManager {
     public final BoardType boardType;
-    public final ShipType[] ships;
+    public final List<ShipType> ships;
     public final IPlayer player1;
     public final IPlayer player2;
 
     protected GameResult gameResult;
     protected boolean playersFlipped;
     protected List<Coordinates> moves;
-    protected ShipPlacement[] shipPlacements1;
-    protected ShipPlacement[] shipPlacements2;
+    protected List<ShipPlacement> shipPlacements1;
+    protected List<ShipPlacement> shipPlacements2;
     protected FullBoardView boardPlayer1;
     protected FullBoardView boardPlayer2;
 
-    public GameManager(BoardType boardType, ShipType[] ships, IPlayer player1, IPlayer player2) {
+    public GameManager(BoardType boardType, List<ShipType> ships, IPlayer player1, IPlayer player2) {
         this.boardType = boardType;
-        this.ships = ships;
+        this.ships = Collections.unmodifiableList(ships);
         this.player1 = player1;
         this.player2 = player2;
         playersFlipped = true; // we switch at init
@@ -91,15 +92,15 @@ public class GameManager {
     }
 
     protected void placeShips() {
-        Callable<ShipPlacement[]> shipsPlayer1Callable = () -> {
-            ShipPlacement[] shipPlacements = getPlayer1().placeShips(ships);
+        Callable<List<ShipPlacement>> shipsPlayer1Callable = () -> {
+            List<ShipPlacement> shipPlacements = getPlayer1().placeShips(ships);
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
         shipPlacements1 = wrap(PlayerType.PLAYER1, shipsPlayer1Callable);
 
-        Callable<ShipPlacement[]> shipsPlayer2Callable = () -> {
-            ShipPlacement[] shipPlacements = getPlayer2().placeShips(ships);
+        Callable<List<ShipPlacement>> shipsPlayer2Callable = () -> {
+            List<ShipPlacement> shipPlacements = getPlayer2().placeShips(ships);
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };

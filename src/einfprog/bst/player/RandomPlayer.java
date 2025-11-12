@@ -27,11 +27,11 @@ public class RandomPlayer extends AbstractPlayer {
     }
 
     @Override
-    public ShipPlacement[] placeMyShips(ShipType[] ships) {
-        ShipPlacement[] result = new ShipPlacement[ships.length];
-        for(int i = 0; i < ships.length; i++) {
-            ShipType shipType = ships[i];
-            while(result[i] == null) {
+    public List<ShipPlacement> placeMyShips(List<ShipType> ships) {
+        List<ShipPlacement> result = new ArrayList<>(ships.size());
+        for(int i = 0; i < ships.size(); i++) {
+            ShipType shipType = ships.get(i);
+            while(result.size() <= i) {
                 ShipPlacement placement;
                 if(random.nextBoolean()) {
                     //horizontal
@@ -47,14 +47,14 @@ public class RandomPlayer extends AbstractPlayer {
 
                 boolean overlap = false;
                 for(int j = 0; j < i && !overlap; j++) {
-                    ShipPlacement otherPlacement = result[j];
+                    ShipPlacement otherPlacement = result.get(j);
                     if(ShipPlacement.overlaps(otherPlacement, placement)) {
                         overlap = true;
                     }
                 }
 
                 if(!overlap) {
-                    result[i] = placement;
+                    result.add(placement);
                 }
             }
 

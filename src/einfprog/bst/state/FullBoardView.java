@@ -12,12 +12,12 @@ import java.util.stream.IntStream;
 public class FullBoardView {
     protected final ShallowBoardView boardView;
 
-    protected final ShipPlacement[] ships;
+    protected final List<ShipPlacement> ships;
     protected final ShipPlacement[][] placement;
 
     protected final List<ShipPlacement> unsunkShips;
 
-    public FullBoardView(BoardType boardType, ShipPlacement[] ships) {
+    public FullBoardView(BoardType boardType, List<ShipPlacement> ships) {
         boardView = new ShallowBoardView(boardType);
 
         this.ships = ships;
@@ -35,7 +35,7 @@ public class FullBoardView {
             }
         }
 
-        unsunkShips = new ArrayList<>(ships.length);
+        unsunkShips = new ArrayList<>(ships.size());
         for(ShipPlacement ship : ships) {
             unsunkShips.add(ship);
         }
@@ -77,7 +77,7 @@ public class FullBoardView {
     }
 
     public List<ShipPlacement> getSunkShips() {
-        return Arrays.stream(ships).filter(s -> !unsunkShips.contains(s)).toList();
+        return ships.stream().filter(s -> !unsunkShips.contains(s)).toList();
     }
 
 

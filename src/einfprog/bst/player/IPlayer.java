@@ -9,6 +9,7 @@ import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -31,7 +32,7 @@ import java.util.Random;
  * <p>The <b>game lifecycle</b> is as follows and in this order:
  * <ul>
  *     <li>{@link IPlayer#onGameStart(PlayerType)} (once)</li>
- *     <li>{@link IPlayer#placeShips(ShipType[])} (once)</li>
+ *     <li>{@link IPlayer#placeShips(List)} (once)</li>
  *     <li><b>Firing lifecycle</b> (at least once)</li>
  *     <li>{@link IPlayer#onGameEnd(GameResult)}</li>
  * </ul>
@@ -91,7 +92,7 @@ public interface IPlayer {
      * @param ships The ship types to place.
      * @return The ship placements where their order must be the same as the order of the ships parameter..
      */
-    ShipPlacement[] placeShips(ShipType[] ships);
+    List<ShipPlacement> placeShips(List<ShipType> ships);
 
     /**
      * Called to get the next target announcement (i.e. where the player fires). The result is then given in {@link IPlayer#onFireResult(FireResult)}.

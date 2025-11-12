@@ -7,13 +7,14 @@ import einfprog.bst.player.IPlayer;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class TimeOutGameManager extends GameManager implements Closeable {
     public final long timeoutMillis;
     private final ExecutorService executor;
 
-    public TimeOutGameManager(BoardType boardType, ShipType[] ships, IPlayer player1, IPlayer player2, long timeoutMillis) {
+    public TimeOutGameManager(BoardType boardType, List<ShipType> ships, IPlayer player1, IPlayer player2, long timeoutMillis) {
         super(boardType, ships, player1, player2);
         this.timeoutMillis = timeoutMillis;
         executor = Executors.newSingleThreadExecutor();

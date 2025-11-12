@@ -27,7 +27,7 @@ public abstract class AbstractPlayer implements IPlayer {
 
     public abstract String getName();
 
-    public abstract ShipPlacement[] placeMyShips(ShipType[] ships);
+    public abstract List<ShipPlacement> placeMyShips(List<ShipType> ships);
 
     public abstract Coordinates selectNextTarget();
 
@@ -51,11 +51,11 @@ public abstract class AbstractPlayer implements IPlayer {
     public void onGameEnd(GameResult result) {}
 
     @Override
-    public ShipPlacement[] placeShips(ShipType[] ships) {
-        ShipPlacement[] placements = placeMyShips(ships);
+    public List<ShipPlacement> placeShips(List<ShipType> ships) {
+        List<ShipPlacement> placements = placeMyShips(ships);
         myBoard = new FullBoardView(boardType, placements);
         opponentBoard = new ShallowBoardView(boardType);
-        shipsToSink = new ArrayList<>(Arrays.asList(ships));
+        shipsToSink = new ArrayList<>(ships);
         return placements;
     }
 

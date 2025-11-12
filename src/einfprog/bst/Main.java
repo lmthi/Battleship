@@ -23,7 +23,7 @@ public class Main {
         List<IPlayer> players = new LinkedList<>();
 
         for(int i = 1; i <= 1; i++) {
-            players.add(new RandomPlayer("P".repeat(i) + i, 3));
+            players.add(new RandomPlayer("P".repeat(i) + i));
         }
 
         //players.add(new ManualPlayer());

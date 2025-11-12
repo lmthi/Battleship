@@ -11,13 +11,11 @@ import java.util.List;
 
 public class RandomPlayer extends AbstractPlayer {
     public final String name;
-    public final int retries;
 
     protected List<Coordinates> moves;
 
-    public RandomPlayer(String name, int retries) {
+    public RandomPlayer(String name) {
         this.name = name;
-        this.retries = retries;
         moves = null;
     }
 

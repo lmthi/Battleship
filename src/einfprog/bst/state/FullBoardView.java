@@ -6,7 +6,6 @@ import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class FullBoardView {
@@ -42,15 +41,15 @@ public class FullBoardView {
     }
 
     public FireResult fireAt(Coordinates coords) {
-        BoardMarkerType prevMarker = boardView.getMarker(coords);
+        BoardMarker.BoardMarkerType prevMarker = boardView.getMarker(coords).type;
 
-        if(prevMarker != BoardMarkerType.NONE) {
+        if(prevMarker != BoardMarker.BoardMarkerType.NONE) {
             return new FireResult.Repetition(coords);
         }
 
         ShipPlacement hit = placement[coords.getRowIndex()][coords.getColumnIndex()];
         if(hit == null) {
-            boardView.setMarker(coords, BoardMarkerType.MISS);
+            boardView.setMarker(coords, new BoardMarker.Miss());
             return new FireResult.Miss(coords);
         }
 
@@ -60,15 +59,15 @@ public class FullBoardView {
                 continue;
             }
 
-            if(boardView.getMarker(shipCoords) == BoardMarkerType.NONE) {
+            if(boardView.getMarker(shipCoords).type == BoardMarker.BoardMarkerType.NONE) {
                 // one coord was not hit
-                boardView.setMarker(coords, BoardMarkerType.HIT);
+                boardView.setMarker(coords, new BoardMarker.Hit());
                 return new FireResult.Hit(coords);
             }
         }
 
         unsunkShips.remove(hit);
-        boardView.setMarker(coords, BoardMarkerType.SUNK);
+        boardView.setMarker(coords, new BoardMarker.Sunk(hit.shipType));
         return new FireResult.Sunk(coords, hit.shipType);
     }
 
@@ -137,7 +136,7 @@ public class FullBoardView {
             String mark = leftMarkers.get(r);
             row.append(colorBorder).append(mark).append(colorDefault);
             for(int c = 0; c < boardType.getWidth(); c++) {
-                BoardMarkerType marker = boardView.markers[r][c];
+                BoardMarker.BoardMarkerType marker = boardView.markers[r][c].type;
                 String s = switch(marker) {
                     case NONE -> colorNone + "◼" + colorDefault;
                     case MISS -> colorMiss + "◼" + colorDefault;

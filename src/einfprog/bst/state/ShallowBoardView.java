@@ -6,21 +6,19 @@ import einfprog.bst.game.Coordinates;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ShallowBoardView {
     public final BoardType boardType;
-    protected final BoardMarkerType[][] markers;
+    protected final BoardMarker[][] markers;
 
     public ShallowBoardView(BoardType boardType) {
         this.boardType = boardType;
 
-        markers = new BoardMarkerType[boardType.getHeight()][boardType.getWidth()];
+        markers = new BoardMarker[boardType.getHeight()][boardType.getWidth()];
         for(int r = 0; r < boardType.getHeight(); r++) {
             for(int c = 0; c < boardType.getWidth(); c++) {
-                markers[r][c] = BoardMarkerType.NONE;
+                markers[r][c] = new BoardMarker.None();
             }
         }
     }
@@ -34,13 +32,13 @@ public class ShallowBoardView {
         }
     }
 
-    public BoardMarkerType getMarker(Coordinates coords) {
+    public BoardMarker getMarker(Coordinates coords) {
         validateCoords(coords);
         return markers[coords.getRowIndex()][coords.getColumnIndex()];
     }
 
-    public BoardMarkerType setMarker(Coordinates coords, BoardMarkerType marker) {
-        BoardMarkerType prevMarker = getMarker(coords);
+    public BoardMarker setMarker(Coordinates coords, BoardMarker marker) {
+        BoardMarker prevMarker = getMarker(coords);
         markers[coords.getRowIndex()][coords.getColumnIndex()] = marker;
         return prevMarker;
     }
@@ -97,7 +95,7 @@ public class ShallowBoardView {
             String mark = leftMarkers.get(r);
             row.append(colorBorder).append(mark).append(colorDefault);
             for(int c = 0; c < boardType.getWidth(); c++) {
-                BoardMarkerType marker = markers[r][c];
+                BoardMarker.BoardMarkerType marker = markers[r][c].type;
                 String s = switch(marker) {
                     case NONE -> colorNone + "◼" + colorDefault;
                     case MISS -> colorMiss + "◼" + colorDefault;

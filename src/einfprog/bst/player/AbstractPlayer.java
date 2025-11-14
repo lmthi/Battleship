@@ -8,12 +8,11 @@ import einfprog.bst.game.BoardType;
 import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
-import einfprog.bst.state.BoardMarkerType;
+import einfprog.bst.state.BoardMarker;
 import einfprog.bst.state.FullBoardView;
 import einfprog.bst.state.ShallowBoardView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +20,7 @@ public abstract class AbstractPlayer implements IPlayer {
     protected Random random;
 
     protected BoardType boardType;
+    protected List<ShipType> shipTypes;
     protected FullBoardView myBoard;
     protected ShallowBoardView opponentBoard;
     protected List<ShipType> shipsToSink;
@@ -52,6 +52,7 @@ public abstract class AbstractPlayer implements IPlayer {
 
     @Override
     public List<ShipPlacement> placeShips(List<ShipType> ships) {
+        this.shipTypes = ships;
         List<ShipPlacement> placements = placeMyShips(ships);
         myBoard = new FullBoardView(boardType, placements);
         opponentBoard = new ShallowBoardView(boardType);
@@ -67,8 +68,8 @@ public abstract class AbstractPlayer implements IPlayer {
 
     @Override
     public void onFireResult(FireResult result) {
-        BoardMarkerType marker = BoardMarkerType.fromFireResult(result);
-        if(marker != BoardMarkerType.NONE) {
+        BoardMarker marker = BoardMarker.fromFireResult(result);
+        if(marker.type != BoardMarker.BoardMarkerType.NONE) {
             opponentBoard.setMarker(result.coords, marker);
         }
         if(result instanceof FireResult.Sunk sunkResult) {

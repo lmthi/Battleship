@@ -33,13 +33,13 @@ public class RandomPlayer extends AbstractPlayer {
                 ShipPlacement placement;
                 if(random.nextBoolean()) {
                     //horizontal
-                    int r = random.nextInt(boardType.getHeight() - shipType.width + 1) + boardType.rowStart;
-                    int c = random.nextInt(boardType.getWidth() - shipType.length + 1) + boardType.colStart;
+                    int r = random.nextInt(boardType.height - shipType.width + 1);
+                    int c = random.nextInt(boardType.width - shipType.length + 1);
                     placement = new ShipPlacement(shipType, new Coordinates(boardType, r, c), new Coordinates(boardType, r + shipType.width - 1, c + shipType.length - 1));
                 } else {
                     //vertical
-                    int r = random.nextInt(boardType.getHeight() - shipType.length + 1) + boardType.rowStart;
-                    int c = random.nextInt(boardType.getWidth() - shipType.width + 1) + boardType.colStart;
+                    int r = random.nextInt(boardType.height - shipType.length + 1);
+                    int c = random.nextInt(boardType.width - shipType.width + 1);
                     placement = new ShipPlacement(shipType, new Coordinates(boardType, r, c), new Coordinates(boardType, r + shipType.length - 1, c + shipType.width - 1));
                 }
 
@@ -64,7 +64,7 @@ public class RandomPlayer extends AbstractPlayer {
     public Coordinates selectNextTarget() {
         if(moves.isEmpty()) {
             // should never happen
-            return new Coordinates(boardType, random.nextInt(boardType.getHeight()) + boardType.rowStart, random.nextInt(boardType.getWidth()) + boardType.colStart);
+            return new Coordinates(boardType, random.nextInt(boardType.height), random.nextInt(boardType.width));
         }
         return moves.removeLast();
     }
@@ -73,9 +73,9 @@ public class RandomPlayer extends AbstractPlayer {
     public void onGameStart(PlayerType playerType) {
         super.onGameStart(playerType);
 
-        moves = new ArrayList<>(boardType.getHeight() * boardType.getWidth());
-        for(int r = 0; r < boardType.getHeight(); r++) {
-            for(int c = 0; c < boardType.getWidth(); c++) {
+        moves = new ArrayList<>(boardType.height * boardType.width);
+        for(int r = 0; r < boardType.height; r++) {
+            for(int c = 0; c < boardType.width; c++) {
                 moves.add(new Coordinates(boardType, r, c));
             }
         }

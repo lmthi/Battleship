@@ -21,16 +21,16 @@ public class FullBoardView {
 
         this.ships = ships;
 
-        placement = new ShipPlacement[boardType.getHeight()][boardType.getWidth()];
-        for(int r = 0; r < boardType.getHeight(); r++) {
-            for(int c = 0; c < boardType.getWidth(); c++) {
+        placement = new ShipPlacement[boardType.height][boardType.width];
+        for(int r = 0; r < boardType.height; r++) {
+            for(int c = 0; c < boardType.width; c++) {
                 placement[r][c] = null;
             }
         }
 
         for(ShipPlacement ship : ships) {
             for(Coordinates coords : ship.allCoordinates) {
-                placement[coords.getRowIndex()][coords.getColumnIndex()] = ship;
+                placement[coords.row][coords.column] = ship;
             }
         }
 
@@ -47,7 +47,7 @@ public class FullBoardView {
             return new FireResult.Repetition(coords);
         }
 
-        ShipPlacement hit = placement[coords.getRowIndex()][coords.getColumnIndex()];
+        ShipPlacement hit = placement[coords.row][coords.column];
         if(hit == null) {
             boardView.setMarker(coords, new BoardMarker.Miss());
             return new FireResult.Miss(coords);
@@ -87,7 +87,7 @@ public class FullBoardView {
     public List<String> getLineRepresentationList() {
         final BoardType boardType = boardView.boardType;
 
-        List<String> leftMarkers = IntStream.range(boardType.rowStart, boardType.rowEnd).mapToObj(boardType::formatRow).toList();
+        List<String> leftMarkers = IntStream.range(0, boardType.height).mapToObj(boardType::formatRow).toList();
         int leftMarkerWidth = leftMarkers.stream().mapToInt(String::length).max().orElse(0);
         leftMarkers = leftMarkers.stream().map(s -> " ".repeat(leftMarkerWidth - s.length()) + s).toList();
 
@@ -115,7 +115,7 @@ public class FullBoardView {
 
             StringBuilder row = new StringBuilder();
             row.append(corner).append(" ".repeat(leftMarkerWidth-1));
-            for (int i = boardType.colStart; i < boardType.colEnd; i++) {
+            for (int i = 0; i < boardType.width; i++) {
                 String s = boardType.formatColumn(i);
                 if (s.length() <= l) {
                     row.append(" ");
@@ -129,13 +129,13 @@ public class FullBoardView {
             topMarkerRows.add(row.toString());
         }
 
-        List<String> rows = new ArrayList<>(boardType.getHeight() + 2 * topMarkerRows.size());
+        List<String> rows = new ArrayList<>(boardType.height + 2 * topMarkerRows.size());
         rows.addAll(topMarkerRows);
-        for(int r = 0; r < boardType.getHeight(); r++) {
+        for(int r = 0; r < boardType.height; r++) {
             StringBuilder row = new StringBuilder();
             String mark = leftMarkers.get(r);
             row.append(colorBorder).append(mark).append(colorDefault);
-            for(int c = 0; c < boardType.getWidth(); c++) {
+            for(int c = 0; c < boardType.width; c++) {
                 BoardMarker.BoardMarkerType marker = boardView.markers[r][c].type;
                 String s = switch(marker) {
                     case NONE -> colorNone + "◼" + colorDefault;

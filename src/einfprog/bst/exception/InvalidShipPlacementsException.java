@@ -37,11 +37,11 @@ public class InvalidShipPlacementsException extends BSTException {
                 throw new InvalidShipPlacementsException(InvalidShipPlacementsType.DIFFERENT_BOARDS, "Different board types", ships, shipTypes);
             }
         }
-        boolean[][] flags = new boolean[board.getHeight()][board.getWidth()];
+        boolean[][] flags = new boolean[board.height][board.width];
         for(ShipPlacement ship : ships) {
             for(Coordinates coords : ship.allCoordinates) {
-                if(!flags[coords.getRowIndex()][coords.getColumnIndex()]) {
-                    flags[coords.getRowIndex()][coords.getColumnIndex()] = true;
+                if(!flags[coords.row][coords.column]) {
+                    flags[coords.row][coords.column] = true;
                 } else {
                     throw new InvalidShipPlacementsException(InvalidShipPlacementsType.OVERLAP, String.format("Ships overlapping at %s", coords.toString()), ships, shipTypes);
                 }

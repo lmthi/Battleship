@@ -33,11 +33,11 @@ public final class ShipPlacement {
     }
 
     public static boolean overlaps(BoardType board, ShipPlacement[] ships) {
-        boolean[][] flags = new boolean[board.getHeight()][board.getWidth()];
+        boolean[][] flags = new boolean[board.height][board.width];
         for(ShipPlacement ship : ships) {
             for(Coordinates coords : ship.allCoordinates) {
-                if(!flags[coords.getRowIndex()][coords.getColumnIndex()]) {
-                    flags[coords.getRowIndex()][coords.getColumnIndex()] = true;
+                if(!flags[coords.row][coords.column]) {
+                    flags[coords.row][coords.column] = true;
                 } else {
                     return true;
                 }

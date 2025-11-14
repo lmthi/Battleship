@@ -130,20 +130,20 @@ public class ManualPlayer extends AbstractPlayer {
                 boolean retry = false;
 
                 if(sr.length() == 1) {
-                    r = sr.charAt(0);
+                    r = boardType.readRow(sr.charAt(0));
                 } else {
                     try {
-                        r = boardType.rowStart + Integer.parseInt(sr) - 1;
+                        r = Integer.parseInt(sr) - 1;
                     } catch (NumberFormatException _) {
                         retry = true;
                     }
                 }
 
                 if(sc.length() == 1) {
-                    c = sc.charAt(0);
+                    c = boardType.readColumn(sc.charAt(0));
                 } else {
                     try {
-                        c = boardType.colStart + Integer.parseInt(sc) - 1;
+                        c = Integer.parseInt(sc) - 1;
                     } catch (NumberFormatException _) {
                         retry = true;
                     }

@@ -20,7 +20,7 @@ public class GameResult {
 
     @Override
     public String toString() {
-        return String.format("type: %s, board: %s, winner: %s", type.name(), String.format("%dx%d", board.getHeight(), board.getWidth()), winner.name());
+        return String.format("type: %s, board: %s, winner: %s", type.name(), String.format("%dx%d", board.height, board.width), winner.name());
     }
 
     public static final class FullyPlayed extends GameResult {

@@ -6,34 +6,22 @@ public final class BoardType {
     private static char CIRCLED_A = '\u24B6';
     private static char CIRCLED_1 = '\u2460';
 
-    public static final BoardType STANDARD_BOARD = new BoardType('A', '1', STANDARD_BOARD_SIZE);
+    public static final BoardType STANDARD_BOARD = new BoardType(STANDARD_BOARD_SIZE);
 
-    public final int rowStart; //incl
-    public final int rowEnd; //excl
-    public final int colStart; //incl
-    public final int colEnd; //excl
+    public final int height; //incl
+    public final int width; //incl
 
-    public BoardType(int rowStart, int rowEnd, int colStart, int colEnd) {
-        this.rowStart = rowStart;
-        this.rowEnd = rowEnd;
-        this.colStart = colStart;
-        this.colEnd = colEnd;
+    public BoardType(int height, int width) {
+        this.height = height;
+        this.width = width;
     }
 
-    public BoardType(int rowStart, int colStart, int size) {
-        this(rowStart, rowStart + size, colStart, colStart + size);
-    }
-
-    public int getHeight() {
-        return rowEnd - rowStart;
-    }
-
-    public int getWidth() {
-        return colEnd - colStart;
+    public BoardType(int size) {
+        this(size, size);
     }
 
     public boolean validate(int row, int column) {
-        return row >= rowStart && row < rowEnd && column >= colStart && column < colEnd;
+        return row >= 0 && row < height && column >= 0 && column < width;
     }
 
     public String formatCoordinates(Coordinates coordinates) {
@@ -41,10 +29,18 @@ public final class BoardType {
     }
 
     public String formatRow(int row) {
-        return String.valueOf((char)(row-rowStart+CIRCLED_A));
+        return String.valueOf((char)(row+CIRCLED_A));
     }
 
     public String formatColumn(int column) {
-        return String.valueOf((char)(column-colStart+CIRCLED_1));
+        return String.valueOf((char)(column+CIRCLED_1));
+    }
+
+    public int readRow(char row) {
+        return row - 'A';
+    }
+
+    public int readColumn(char column) {
+        return column - '1';
     }
 }

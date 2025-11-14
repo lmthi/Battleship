@@ -15,13 +15,6 @@ public final class Coordinates {
         this.column = column;
     }
 
-    public int getRowIndex() {
-        return row - board.rowStart;
-    }
-    public int getColumnIndex() {
-        return column - board.colStart;
-    }
-
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Coordinates coords &&

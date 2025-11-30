@@ -33,8 +33,8 @@ public class TimeoutPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public void onMatchStart(String opponent, int rounds, BoardType board) {
-        wrap(() -> player.onMatchStart(opponent, rounds, board));
+    public void onMatchStart(String opponent, int rounds, BoardType board, List<ShipType> ships) {
+        wrap(() -> player.onMatchStart(opponent, rounds, board, ships));
     }
 
     @Override
@@ -53,8 +53,8 @@ public class TimeoutPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public List<ShipPlacement> placeShips(List<ShipType> ships) {
-        return wrap(() -> player.placeShips(ships));
+    public List<ShipPlacement> placeShips() {
+        return wrap(() -> player.placeShips());
     }
 
     @Override

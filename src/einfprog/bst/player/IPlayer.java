@@ -23,7 +23,7 @@ import java.util.Random;
  * </br>
  * <p>The <b>match lifecycle</b> is as follows and in this order:
  * <ul>
- *     <li>{@link IPlayer#onMatchStart(String, int, BoardType)} (once)</li>
+ *     <li>{@link IPlayer#onMatchStart(String, int, BoardType, List)} (once)</li>
  *     <li><b>Game lifecycle</b> (at least once)</li>
  *     <li>{@link IPlayer#onMatchEnd(MatchResult)} (once)</li>
  * </ul>
@@ -32,7 +32,7 @@ import java.util.Random;
  * <p>The <b>game lifecycle</b> is as follows and in this order:
  * <ul>
  *     <li>{@link IPlayer#onGameStart(PlayerType)} (once)</li>
- *     <li>{@link IPlayer#placeShips(List)} (once)</li>
+ *     <li>{@link IPlayer#placeShips()} (once)</li>
  *     <li><b>Firing lifecycle</b> (at least once)</li>
  *     <li>{@link IPlayer#onGameEnd(GameResult)}</li>
  * </ul>
@@ -64,9 +64,10 @@ public interface IPlayer {
      * A match is started and a best-of-X (with possible overtime) is played.
      * @param opponent The unique name of the opponent for this match.
      * @param rounds The match is a best-of-X where X is this parameter.
-     * @param board The board type the match will be played on
+     * @param board The board type the match will be played on.
+     * @param ships The ship types the match will be played with.
      */
-    void onMatchStart(String opponent, int rounds, BoardType board);
+    void onMatchStart(String opponent, int rounds, BoardType board, List<ShipType> ships);
 
     /**
      * A match ended with a clear winner.
@@ -89,10 +90,9 @@ public interface IPlayer {
     /**
      * Called at game start (once per ship) to place each ship on to the board.
      *
-     * @param ships The ship types to place.
      * @return The ship placements where their order must be the same as the order of the ships parameter..
      */
-    List<ShipPlacement> placeShips(List<ShipType> ships);
+    List<ShipPlacement> placeShips();
 
     /**
      * Called to get the next target announcement (i.e. where the player fires). The result is then given in {@link IPlayer#onFireResult(FireResult)}.

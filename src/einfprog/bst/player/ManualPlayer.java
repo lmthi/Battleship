@@ -38,11 +38,11 @@ public class ManualPlayer extends AbstractPlayer {
     }
 
     @Override
-    public List<ShipPlacement> placeMyShips(List<ShipType> ships) {
-        List<ShipPlacement> placedShips = new ArrayList<>(ships.size());
+    public List<ShipPlacement> placeMyShips() {
+        List<ShipPlacement> placedShips = new ArrayList<>(shipTypes.size());
         FullBoardView curBoard = null;
 
-        for(ShipType ship : ships) {
+        for(ShipType ship : shipTypes) {
             curBoard = new FullBoardView(boardType, placedShips);
 
             System.out.println("Current Board:");

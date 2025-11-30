@@ -74,14 +74,14 @@ public class GameManager {
 
     protected void placeShips() {
         Callable<List<ShipPlacement>> shipsPlayer1Callable = () -> {
-            List<ShipPlacement> shipPlacements = player1.placeShips(ships);
+            List<ShipPlacement> shipPlacements = player1.placeShips();
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
         shipPlacements1 = wrap(PlayerType.PLAYER1, shipsPlayer1Callable);
 
         Callable<List<ShipPlacement>> shipsPlayer2Callable = () -> {
-            List<ShipPlacement> shipPlacements = player2.placeShips(ships);
+            List<ShipPlacement> shipPlacements = player2.placeShips();
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };

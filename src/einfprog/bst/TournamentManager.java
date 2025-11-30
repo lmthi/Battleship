@@ -52,8 +52,8 @@ public class TournamentManager {
     }
 
     protected int playMatch(int rounds, IPlayer player1, IPlayer player2) {
-        player1.onMatchStart(player2.getName(), rounds, boardType);
-        player2.onMatchStart(player1.getName(), rounds, boardType);
+        player1.onMatchStart(player2.getName(), rounds, boardType, ships);
+        player2.onMatchStart(player1.getName(), rounds, boardType, ships);
 
         boolean flip = false;
         int wins1 = 0;

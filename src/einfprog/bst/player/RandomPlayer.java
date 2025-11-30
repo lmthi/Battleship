@@ -25,10 +25,10 @@ public class RandomPlayer extends AbstractPlayer {
     }
 
     @Override
-    public List<ShipPlacement> placeMyShips(List<ShipType> ships) {
-        List<ShipPlacement> result = new ArrayList<>(ships.size());
-        for(int i = 0; i < ships.size(); i++) {
-            ShipType shipType = ships.get(i);
+    public List<ShipPlacement> placeMyShips() {
+        List<ShipPlacement> result = new ArrayList<>(shipTypes.size());
+        for(int i = 0; i < shipTypes.size(); i++) {
+            ShipType shipType = shipTypes.get(i);
             while(result.size() <= i) {
                 ShipPlacement placement;
                 if(random.nextBoolean()) {

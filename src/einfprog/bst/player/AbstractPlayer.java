@@ -27,7 +27,7 @@ public abstract class AbstractPlayer implements IPlayer {
 
     public abstract String getName();
 
-    public abstract List<ShipPlacement> placeMyShips(List<ShipType> ships);
+    public abstract List<ShipPlacement> placeMyShips();
 
     public abstract Coordinates selectNextTarget();
 
@@ -37,8 +37,9 @@ public abstract class AbstractPlayer implements IPlayer {
     }
 
     @Override
-    public void onMatchStart(String opponent, int rounds, BoardType board) {
+    public void onMatchStart(String opponent, int rounds, BoardType board, List<ShipType> ships) {
         this.boardType = board;
+        this.shipTypes = ships;
     }
 
     @Override
@@ -51,12 +52,11 @@ public abstract class AbstractPlayer implements IPlayer {
     public void onGameEnd(GameResult result) {}
 
     @Override
-    public List<ShipPlacement> placeShips(List<ShipType> ships) {
-        this.shipTypes = ships;
-        List<ShipPlacement> placements = placeMyShips(ships);
+    public List<ShipPlacement> placeShips() {
+        List<ShipPlacement> placements = placeMyShips();
         myBoard = new FullBoardView(boardType, placements);
         opponentBoard = new ShallowBoardView(boardType);
-        shipsToSink = new ArrayList<>(ships);
+        shipsToSink = new ArrayList<>(shipTypes);
         return placements;
     }
 

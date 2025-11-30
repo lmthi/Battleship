@@ -46,7 +46,10 @@ public abstract class AbstractPlayer implements IPlayer {
     public void onMatchEnd(MatchResult result) {}
 
     @Override
-    public void onGameStart(PlayerType playerType) {}
+    public void onGameStart(PlayerType playerType) {
+        opponentBoard = new ShallowBoardView(boardType);
+        shipsToSink = new ArrayList<>(shipTypes);
+    }
 
     @Override
     public void onGameEnd(GameResult result) {}
@@ -55,8 +58,6 @@ public abstract class AbstractPlayer implements IPlayer {
     public List<ShipPlacement> placeShips() {
         List<ShipPlacement> placements = placeMyShips();
         myBoard = new FullBoardView(boardType, placements);
-        opponentBoard = new ShallowBoardView(boardType);
-        shipsToSink = new ArrayList<>(shipTypes);
         return placements;
     }
 

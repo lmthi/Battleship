@@ -30,7 +30,7 @@ public class ManualPlayer extends AbstractPlayer {
         super.init(random);
 
         while(name.isEmpty()){
-            System.out.println("What is Your Name? Please Enter:");
+            System.out.print("What is Your Name? Please Enter: ");
             name = SavitchIn.readLineWord();
         }
 
@@ -73,7 +73,7 @@ public class ManualPlayer extends AbstractPlayer {
     @Override
     public Coordinates selectNextTarget() {
         printBoards();
-        System.out.println("Which Coordinates to Fire at?");
+        System.out.print("Which Coordinates to Fire at? ");
         return readCoordinates();
     }
 
@@ -82,32 +82,32 @@ public class ManualPlayer extends AbstractPlayer {
         super.onFireResult(result);
 
         if(result.type == FireResult.FireResultType.MISS) {
-            System.out.println("Miss at " + result.coords + "!");
+            System.out.println("-> Miss at " + result.coords + "!");
         } else if(result.type == FireResult.FireResultType.HIT) {
-            System.out.println("Hit at " + result.coords + "!");
+            System.out.println("-> Hit at " + result.coords + "!");
         } else if(result instanceof FireResult.Sunk sunk) {
-            System.out.println("You Sunk their " + sunk.ship.name + " at " + result.coords + "!");
+            System.out.println("-> You Sunk their " + sunk.ship.name + " at " + result.coords + "!");
         }
 
+        waitForInput();
         printLine();
-        sleep();
     }
 
     @Override
     public void onOpponentFires(Coordinates coordinates) {
         super.onOpponentFires(coordinates);
 
-        System.out.println("Opponent Fired at: " + coordinates);
         System.out.println("Your Board:");
         System.out.println(myBoard.getLineRepresentation());
+        System.out.println("-> Opponent Fired at: " + coordinates);
+        waitForInput();
         printLine();
-        sleep();
     }
 
     protected Coordinates readCoordinates() {
         Coordinates coords = null;
         while(coords == null) {
-            System.out.println("Enter Coordinates:");
+            System.out.print("Enter Coordinates: ");
 
             String sr = null;
             String sc = null;
@@ -192,9 +192,12 @@ public class ManualPlayer extends AbstractPlayer {
         System.out.println("-".repeat(50));
     }
 
-    protected void sleep() {
-        try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(2));
-        } catch (InterruptedException e) {}
+    protected void waitForInput() {
+        System.out.print("Press any key to continue...");
+        try
+        {
+            System.in.read();
+        }
+        catch(Exception e) {}
     }
 }

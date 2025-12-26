@@ -1,17 +1,12 @@
 package einfprog.bst.player;
 
-import einfprog.SavitchIn;
-import einfprog.bst.FireResult;
-import einfprog.bst.exception.BSTException;
+import einfprog.bst.PlayerType;
 import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
-import einfprog.bst.state.FullBoardView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class AutoPlacementManualPlayer extends ManualPlayer {
     @Override
@@ -47,6 +42,19 @@ public class AutoPlacementManualPlayer extends ManualPlayer {
             }
 
         }
+
         return result;
+    }
+
+    @Override
+    public List<ShipPlacement> placeShips() {
+        List<ShipPlacement> ships = super.placeShips();
+
+        System.out.println("This is your board:");
+        printBoards();
+        waitForInput();
+        printLine();
+
+        return ships;
     }
 }

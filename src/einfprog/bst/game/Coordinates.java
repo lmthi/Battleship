@@ -15,6 +15,10 @@ public final class Coordinates {
         this.column = column;
     }
 
+    public Coordinates move(int dRow, int dColumn) {
+        return new Coordinates(board, row + dRow, column + dColumn);
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Coordinates coords &&

@@ -1,6 +1,7 @@
 package einfprog.bst.exception;
 
 import einfprog.bst.game.Coordinates;
+import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
 
 public class IllegalShipPlacementException extends BSTException {
@@ -30,6 +31,10 @@ public class IllegalShipPlacementException extends BSTException {
         if((height != ship.length || width != ship.width) && (height != ship.width || width != ship.length)) {
             throw new IllegalShipPlacementException(InvalidShipPlacementType.MISSIZED, String.format("%s ship size (%dx%d) does not fit corner area (%dx%d)", ship.name, ship.length, ship.width, height, width), ship, coordStart, coordEnd);
         }
+    }
+
+    public static void validate(ShipPlacement shipPlacement) {
+        validate(shipPlacement.shipType, shipPlacement.coordStart, shipPlacement.coordEnd);
     }
 
     public enum InvalidShipPlacementType {

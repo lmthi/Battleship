@@ -1,6 +1,7 @@
 package einfprog.bst.exception;
 
 import einfprog.bst.game.BoardType;
+import einfprog.bst.game.Coordinates;
 
 public class IllegalCoordinatesException extends BSTException {
     public final int row;
@@ -19,6 +20,10 @@ public class IllegalCoordinatesException extends BSTException {
         if(!board.validate(row, column)) {
             throw new IllegalCoordinatesException(InvalidCoordinatesType.INVALID_ROW_COLUMN, String.format("Invalid coordinates row %s (%s), column=%s (%s)", board.formatRow(row), row, board.formatColumn(column), column), row, column);
         }
+    }
+
+    public static void validate(Coordinates coords) {
+        validate(coords.board, coords.row, coords.column);
     }
 
     public enum InvalidCoordinatesType {

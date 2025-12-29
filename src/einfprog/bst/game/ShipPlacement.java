@@ -13,7 +13,6 @@ public final class ShipPlacement {
     public final List<Coordinates> allCoordinates;
 
     public ShipPlacement(ShipType shipType, Coordinates coordStart, Coordinates coordEnd) {
-        IllegalShipPlacementException.validate(shipType, coordStart, coordEnd);
         this.shipType = shipType;
         this.board = coordStart.board;
         this.coordStart = coordStart;

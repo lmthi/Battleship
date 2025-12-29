@@ -1,5 +1,7 @@
 package einfprog.bst;
 
+import einfprog.bst.exception.IllegalCoordinatesException;
+import einfprog.bst.exception.IllegalShipPlacementException;
 import einfprog.bst.exception.InvalidShipPlacementsException;
 import einfprog.bst.game.BoardType;
 import einfprog.bst.game.Coordinates;
@@ -82,6 +84,7 @@ public class GameManager {
 
         Callable<List<ShipPlacement>> shipsPlayer2Callable = () -> {
             List<ShipPlacement> shipPlacements = player2.placeShips();
+            shipPlacements.forEach(IllegalShipPlacementException::validate);
             InvalidShipPlacementsException.validate(shipPlacements, ships);
             return shipPlacements;
         };
@@ -119,7 +122,11 @@ public class GameManager {
             board = boardPlayer1;
         }
 
-        Coordinates coords = wrap(player, attacker::fire);
+        Coordinates coords = wrap(player, () -> {
+            Coordinates innerCoords = attacker.fire();
+            IllegalCoordinatesException.validate(innerCoords);
+            return innerCoords;
+        });
         if(coords == null) {
             return;
         }

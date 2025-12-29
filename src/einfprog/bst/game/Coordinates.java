@@ -9,7 +9,6 @@ public final class Coordinates {
     public final int column;
 
     public Coordinates(BoardType board, int row, int column) {
-        IllegalCoordinatesException.validate(board, row, column);
         this.board = board;
         this.row = row;
         this.column = column;

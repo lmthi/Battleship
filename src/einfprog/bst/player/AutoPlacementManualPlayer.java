@@ -1,6 +1,5 @@
 package einfprog.bst.player;
 
-import einfprog.bst.PlayerType;
 import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
@@ -52,8 +51,8 @@ public class AutoPlacementManualPlayer extends ManualPlayer {
 
         System.out.println("This is your board:");
         printBoards();
-        waitForInput();
-        printLine();
+        InteractionUtil.waitForInput();
+        InteractionUtil.printLine();
 
         return ships;
     }

@@ -47,7 +47,7 @@ public abstract class AbstractPlayer implements IPlayer {
 
     @Override
     public void onGameStart(PlayerType playerType) {
-        boardTracker.newGame();
+        boardTracker.newGame(playerType.starting);
     }
 
     @Override

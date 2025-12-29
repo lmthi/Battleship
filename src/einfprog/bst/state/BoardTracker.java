@@ -6,8 +6,6 @@ import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +15,7 @@ public class BoardTracker {
     protected FullBoardView myBoard;
     protected ShallowBoardView opponentBoard;
     protected List<ShipType> shipsToSink;
+    protected boolean goingFirst;
 
     public BoardTracker() {
         boardType = null;
@@ -24,6 +23,7 @@ public class BoardTracker {
         myBoard = null;
         opponentBoard = null;
         shipsToSink = null;
+        goingFirst = false;
     }
 
     public void init(BoardType board, List<ShipType> ships) {
@@ -34,9 +34,10 @@ public class BoardTracker {
         shipsToSink = null;
     }
 
-    public void newGame() {
+    public void newGame(boolean goingFirst) {
         opponentBoard = new ShallowBoardView(boardType);
         shipsToSink = new ArrayList<>(shipTypes);
+        this.goingFirst = goingFirst;
     }
 
     public void markShips(List<ShipPlacement> placements) {
@@ -55,6 +56,10 @@ public class BoardTracker {
 
     public FireResult markOpponentFires(Coordinates coordinates) {
         return myBoard.fireAt(coordinates);
+    }
+
+    public boolean getGoingFirst() {
+        return goingFirst;
     }
 
     public List<String> getMyBoardRepresentationList() {

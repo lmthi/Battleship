@@ -85,6 +85,7 @@ public class FullBoardView {
     }
 
     public List<String> getLineRepresentationList() {
+        //TODO clean this up
         final BoardType boardType = boardView.boardType;
 
         List<String> leftMarkers = IntStream.range(0, boardType.height).mapToObj(boardType::formatRow).toList();

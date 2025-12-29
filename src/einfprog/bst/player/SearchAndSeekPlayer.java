@@ -152,6 +152,7 @@ public class SearchAndSeekPlayer extends AbstractPlayer {
         }
     }
 
+    //TODO only works for 1xX ship types, not eg. 2x2
     protected class SeekMode extends Mode {
         protected final Coordinates coords;
         protected final boolean clockwise;

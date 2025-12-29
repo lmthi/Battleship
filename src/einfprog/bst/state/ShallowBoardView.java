@@ -48,6 +48,7 @@ public class ShallowBoardView {
     }
 
     public List<String> getLineRepresentationList() {
+        //TODO clean this up
         List<String> leftMarkers = IntStream.range(0, boardType.height).mapToObj(boardType::formatRow).toList();
         int leftMarkerWidth = leftMarkers.stream().mapToInt(String::length).max().orElse(0);
         leftMarkers = leftMarkers.stream().map(s -> " ".repeat(leftMarkerWidth - s.length()) + s).toList();

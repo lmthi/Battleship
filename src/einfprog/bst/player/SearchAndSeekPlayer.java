@@ -102,7 +102,7 @@ public class SearchAndSeekPlayer extends AbstractPlayer {
 
     protected List<Coordinates> findNextPattern() {
         List<Coordinates> pattern = makePattern(1, false, 0);
-        int length = shipsToSink.stream().mapToInt(s -> Math.max(s.length, s.width)).min().orElse(1);
+        int length = boardTracker.getShipsToSink().stream().mapToInt(s -> Math.max(s.length, s.width)).min().orElse(1);
 
         List<Coordinates> nextPattern;
         for(int offset = 0; offset < length; offset++) {
@@ -130,7 +130,7 @@ public class SearchAndSeekPlayer extends AbstractPlayer {
         for(int r = 0; r < boardType.height; r++) {
             for(int c = offset; c < boardType.width; c+=length) {
                 Coordinates coords = new Coordinates(boardType, r, c);
-                if(opponentBoard.getMarker(coords).type == BoardMarker.BoardMarkerType.NONE) {
+                if(boardTracker.getOpponentBoardMarker(coords).type == BoardMarker.BoardMarkerType.NONE) {
                     result.add(coords);
                 }
             }
@@ -187,7 +187,7 @@ public class SearchAndSeekPlayer extends AbstractPlayer {
                 }
 
                 targetCoords = new Coordinates(boardType, row, column);
-            } while(opponentBoard.getMarker(targetCoords).type == BoardMarker.BoardMarkerType.HIT);
+            } while(boardTracker.getOpponentBoardMarker(targetCoords).type == BoardMarker.BoardMarkerType.HIT);
 
             return targetCoords;
         }

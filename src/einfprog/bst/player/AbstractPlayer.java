@@ -8,11 +8,8 @@ import einfprog.bst.game.BoardType;
 import einfprog.bst.game.Coordinates;
 import einfprog.bst.game.ShipPlacement;
 import einfprog.bst.game.ShipType;
-import einfprog.bst.state.BoardMarker;
-import einfprog.bst.state.FullBoardView;
-import einfprog.bst.state.ShallowBoardView;
+import einfprog.bst.state.BoardTracker;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,9 +18,11 @@ public abstract class AbstractPlayer implements IPlayer {
 
     protected BoardType boardType;
     protected List<ShipType> shipTypes;
-    protected FullBoardView myBoard;
-    protected ShallowBoardView opponentBoard;
-    protected List<ShipType> shipsToSink;
+    protected BoardTracker boardTracker;
+
+    public AbstractPlayer() {
+        this.boardTracker = new BoardTracker();
+    }
 
     public abstract String getName();
 
@@ -40,6 +39,7 @@ public abstract class AbstractPlayer implements IPlayer {
     public void onMatchStart(String opponent, int rounds, BoardType board, List<ShipType> ships) {
         this.boardType = board;
         this.shipTypes = ships;
+        boardTracker.init(board, ships);
     }
 
     @Override
@@ -47,8 +47,7 @@ public abstract class AbstractPlayer implements IPlayer {
 
     @Override
     public void onGameStart(PlayerType playerType) {
-        opponentBoard = new ShallowBoardView(boardType);
-        shipsToSink = new ArrayList<>(shipTypes);
+        boardTracker.newGame();
     }
 
     @Override
@@ -57,10 +56,9 @@ public abstract class AbstractPlayer implements IPlayer {
     @Override
     public List<ShipPlacement> placeShips() {
         List<ShipPlacement> placements = placeMyShips();
-        myBoard = new FullBoardView(boardType, placements);
+        boardTracker.markShips(placements);
         return placements;
     }
-
 
     @Override
     public Coordinates fire() {
@@ -69,17 +67,11 @@ public abstract class AbstractPlayer implements IPlayer {
 
     @Override
     public void onFireResult(FireResult result) {
-        BoardMarker marker = BoardMarker.fromFireResult(result);
-        if(marker.type != BoardMarker.BoardMarkerType.NONE) {
-            opponentBoard.setMarker(result.coords, marker);
-        }
-        if(result instanceof FireResult.Sunk sunkResult) {
-            shipsToSink.remove(sunkResult.ship);
-        }
+        boardTracker.markFireResult(result);
     }
 
     @Override
     public void onOpponentFires(Coordinates coordinates) {
-        myBoard.fireAt(coordinates);
+        boardTracker.markOpponentFires(coordinates);
     }
 }

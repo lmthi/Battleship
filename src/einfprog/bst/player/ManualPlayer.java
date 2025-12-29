@@ -97,7 +97,7 @@ public class ManualPlayer extends AbstractPlayer {
         super.onOpponentFires(coordinates);
 
         System.out.println("Your Board:");
-        System.out.println(myBoard.getLineRepresentation());
+        System.out.println(String.join("\n", boardTracker.getMyBoardRepresentationList()));
         System.out.println("-> Opponent Fired at: " + coordinates);
         InteractionUtil.waitForInput();
         InteractionUtil.printLine();
@@ -108,6 +108,6 @@ public class ManualPlayer extends AbstractPlayer {
     }
 
     protected void printBoards() {
-        InteractionUtil.printBoards(this, myBoard, opponentBoard);
+        InteractionUtil.printBoards(boardTracker);
     }
 }

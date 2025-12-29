@@ -4,14 +4,13 @@ import einfprog.SavitchIn;
 import einfprog.bst.exception.BSTException;
 import einfprog.bst.game.BoardType;
 import einfprog.bst.game.Coordinates;
-import einfprog.bst.state.FullBoardView;
-import einfprog.bst.state.ShallowBoardView;
+import einfprog.bst.state.BoardTracker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InteractionUtil {
-    protected static void waitForInput() {
+    public static void waitForInput() {
         System.out.print("Press any key to continue...");
         try
         {
@@ -20,9 +19,9 @@ public class InteractionUtil {
         catch(Exception e) {}
     }
 
-    protected static void printBoards(ManualPlayer manualPlayer, FullBoardView myBoard, ShallowBoardView opponentBoard) {
-        List<String> myBoardPrint = myBoard.getLineRepresentationList();
-        List<String> opponentBoardPrint = opponentBoard.getLineRepresentationList();
+    public static void printBoards(BoardTracker boardTracker) {
+        List<String> myBoardPrint = boardTracker.getMyBoardRepresentationList();
+        List<String> opponentBoardPrint = boardTracker.getOpponentBoardRepresentationList();
 
         if(myBoardPrint.size() != opponentBoardPrint.size()) {
             System.err.println("Can not print boards of different sizes next to each other.");
@@ -41,11 +40,11 @@ public class InteractionUtil {
         }
     }
 
-    protected static void printLine() {
+    public static void printLine() {
         System.out.println("-".repeat(50));
     }
 
-    protected static Coordinates readCoordinates(ManualPlayer manualPlayer, BoardType boardType) {
+    public static Coordinates readCoordinates(ManualPlayer manualPlayer, BoardType boardType) {
         Coordinates coords = null;
         while(coords == null) {
             System.out.print("Enter Coordinates: ");
